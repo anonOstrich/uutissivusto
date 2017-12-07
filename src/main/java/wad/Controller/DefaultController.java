@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class DefaultController {
     
     @GetMapping("*")
-    @ResponseBody
+
     public String home(){
-        return "Uutinen -> Vanhanen";
+        return "index";
     }
     
 }
