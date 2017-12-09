@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Kirjoita uutinen</title>
+    </head>
+    <body>
+        <p>
+            <a th:href="@{/}">Palaa etusivulle</a>
+        </p>
+
+        <form th:action="@{/uutiset}" method="POST">
+            Otsikko: <br/>
+            <input type="text" name="title" value="Otsikko"/>  <br/>
+            Ingressi: <br/>
+            <input type="textarea" name="lead" value="Ingressi" /> <br/>
+            Sisältö: <br/>
+            <textarea name="mainText">Sisältö</textarea><br/>
+            Kirjoitushetki (lopullisesti et saa itse valita)<br/>
+            <input type="datetime-local" name="published" /><br/>
+            <input type="submit" value="Julkaise" /><br/>
+        </form>
+
+
+    </body>
+
+</html>
