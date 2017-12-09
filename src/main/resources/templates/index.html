@@ -8,8 +8,7 @@
 
         <h1>Uutisia</h1>
         <ul>
-            <li>On torstai</li>
-            <li>Ulkona on kylmä</li>
+            <li th:each="article: ${articles}"> <span th:text="${article.title}">Blah</span> </li>
         </ul>
 
     </body>

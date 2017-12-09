@@ -10,6 +10,9 @@ import java.util.List;
 import javax.persistence.ManyToMany;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+/*
+TODO: kuvan lisääminen! Voiko yksi kuva olla monessa artikkelissa? Ei, vaikka toki samansisältöinen kuva voi.
+*/
 
 @Entity
 @Data
