@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title th:text="${article.title}">Otsikko</title>
+    </head>
+    <body>
+        <h1 th:text="${article.title}">Otsikko</h1> <span th:text="${article.published}">julkaistu </span>
+        <p><em th:text="${article.lead}">   Ingressi  </em></p>
+        <p th:text="${article.mainText}">
+            Varsinainen teksti
+        </p>
+        
+        
+
+        <a th:href="@{/}">Palaa etusivulle</a>
+    </body>
+
+</html>

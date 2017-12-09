@@ -8,7 +8,13 @@
 
         <h1>Uutisia</h1>
         <ul>
-            <li th:each="article: ${articles}"> <span th:text="${article.title}">Blah</span> </li>
+            <li th:each="article: ${articles}">
+                <a th:href="@{/uutiset/{id}(id=${article.id})}">
+                    <span th:text="${article.title}">Otsikko</span> 
+                </a>
+                <span th:text="${article.lead}">Ingressi </span>
+                <span th:text="${article.published}"></span>
+            </li>                
         </ul>
         
         

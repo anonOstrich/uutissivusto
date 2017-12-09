@@ -36,3 +36,6 @@ Selaimen lisäksi muuta asennusta ei tarvitse. Sivujen on varmistettu toimivan a
 # puuttuvat ominaisuudet ja muut puutteet
 Yksilöiminen esimerkiksi vain evästeiden tai käyttäjien kirjautumisen avulla. Tällaisten käyttäjien mieltymykset etusivun ulkoasusta voisi pitää mielessä, eikä tarvitsisi joka kerta järjestää katsomiskertojen mukaan, jos näin haluaa etusivun nähdä. Kirjautumisen avulla voisi olla mahdollista myös poimia kiinnostavia uutisia omaan uutislistaa, josta ne löytää tulevaisuudessakin helposti. 
 
+#todo
+- tietokannassa rivinvaihdot pysytvät, thymeleaf ei osaa korvata html-vastikkeilla -> uutinen tulee yhtenä kappaleena. Netissä fixejä tuntuisi olevan monia.
+
