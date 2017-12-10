@@ -9,7 +9,8 @@
             <a th:href="@{/}">Palaa etusivulle</a>
         </p>
 
-        <form th:action="@{/uutiset}" method="POST">
+        <form th:action="@{/uutiset}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" /> <br/>
             Otsikko: <br/>
             <input type="text" name="title" value="Otsikko"/>  <br/>
             Ingressi: <br/>
@@ -17,7 +18,9 @@
             Sisältö: <br/>
             <textarea name="mainText">Sisältö</textarea><br/>
             Kirjoitushetki (lopullisesti et saa itse valita)<br/>
-            <input type="datetime-local" name="published" /><br/>
+            <input type="datetime-local" name="published" /><br/>            
+            Lisää kuva <br/>
+            
             <input type="submit" value="Julkaise" /><br/>
         </form>
 

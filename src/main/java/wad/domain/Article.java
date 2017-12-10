@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List; 
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -26,6 +27,8 @@ public class Article extends AbstractPersistable<Long>{
     private String lead; //ingressi
     private String mainText; 
     private LocalDateTime published; 
+    @Lob
+    private ImageObject image; 
     
     @ManyToMany
     private List<Account> accounts; 

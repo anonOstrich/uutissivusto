@@ -6,6 +6,7 @@
     </head>
     <body>
         <h1 th:text="${article.title}">Otsikko</h1> <span th:text="${article.published}">julkaistu </span>
+        <p><img th:src="@{~/images/{id}(id=${article.image.id})}" /></p>
         <p><em th:text="${article.lead}">   Ingressi  </em></p>
         <p th:text="${article.mainText}">
             Varsinainen teksti
