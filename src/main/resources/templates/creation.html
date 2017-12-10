@@ -10,7 +10,7 @@
         </p>
 
         <form th:action="@{/uutiset}" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" /> <br/>
+
             Otsikko: <br/>
             <input type="text" name="title" value="Otsikko"/>  <br/>
             Ingressi: <br/>
@@ -20,7 +20,21 @@
             Kirjoitushetki (lopullisesti et saa itse valita)<br/>
             <input type="datetime-local" name="published" /><br/>            
             Lisää kuva <br/>
-            
+            <input type="file" name="file" /> <br/>
+            Valitse kategoria(t)<br/>
+
+
+           
+            <ul>
+                <li th:each="category : ${categories}">
+                    <input type="checkbox" th:value="${category.id}" name="category" />
+                    <label  
+                        th:text="${category.name}">Heating</label>
+                </li>
+            </ul>
+
+            <br/>
+
             <input type="submit" value="Julkaise" /><br/>
         </form>
 

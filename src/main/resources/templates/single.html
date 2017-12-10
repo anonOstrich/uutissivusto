@@ -13,6 +13,12 @@
         </p>
         
         
+        <h3>Kategoriat</h3>
+        <ul>
+            <li th:each="category: ${article.categories}" th:text="${category.name}">Kategorian nimi :))) </li>
+        </ul>
+        
+        
 
         <a th:href="@{/}">Palaa etusivulle</a>
     </body>
