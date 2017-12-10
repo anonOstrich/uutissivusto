@@ -15,17 +15,7 @@ public class DefaultController {
     @Autowired
     private ArticleRepository articleRepository; 
     
-    @PostConstruct
-    public void init(){
-        if (!articleRepository.findAll().isEmpty()){
-            return;
-        }
-        
-        Article article = new Article(); 
-        article.setTitle("JÄNNITTÄVÄ RÄJÄHDYS");
-        
-        articleRepository.save(article);
-    }
+
     
     
     @GetMapping("*")
