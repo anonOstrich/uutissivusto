@@ -1,6 +1,7 @@
 package wad.controller;
 
 import java.io.IOException;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,7 @@ public class ImageController {
         return "redirect:/images";
     }
 
+    @Transactional
     @GetMapping("/images/{id}")
     public ResponseEntity<byte[]> viewFile(@PathVariable Long id) {
 

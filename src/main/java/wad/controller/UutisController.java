@@ -32,6 +32,7 @@ public class UutisController {
         return "index";
     }
     
+    @Transactional
     @GetMapping("/uutiset/{id}")
     public String single(@PathVariable Long id, Model model){
         if(id == null){
