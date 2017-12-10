@@ -2,6 +2,7 @@ package wad.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -45,6 +46,8 @@ public class UutisController {
         return "single";        
     }
 
+    
+    @Transactional
     @PostMapping("/uutiset")
     public String add(@RequestParam String title, @RequestParam String lead, @RequestParam String mainText,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime published, 
