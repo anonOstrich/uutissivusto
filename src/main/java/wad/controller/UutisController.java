@@ -22,51 +22,48 @@ public class UutisController {
 
     @Autowired
     private ArticleRepository articleRepository;
-    
+
     @Autowired
-    private ImageObjectRepository imageObjectRepository; 
+    private ImageObjectRepository imageObjectRepository;
 
     @GetMapping("/uutiset")
     public String home(Model model) {
         model.addAttribute("articles", articleRepository.findAll());
         return "index";
     }
-    
+
     @Transactional
     @GetMapping("/uutiset/{id}")
-    public String single(@PathVariable Long id, Model model){
-        if(id == null){
+    public String single(@PathVariable Long id, Model model) {
+        if (id == null) {
             return "redirect:/uutiset";
         }
-        Article article = articleRepository.findById(id); 
-        if(article == null){
+        Article article = articleRepository.findById(id).get();
+        if (article == null) {
             return "redirect:/uutiset";
         }
         model.addAttribute("article", article);
-        
-        return "single";        
+
+        return "single";
     }
 
-    
     @Transactional
     @PostMapping("/uutiset")
     public String add(@RequestParam String title, @RequestParam String lead, @RequestParam String mainText,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime published, 
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime published,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
-        
-        if(!file.getContentType().contains("image")){
+
+        if (!file.getContentType().contains("image")) {
             return "redirect:/uutiset";
         }
-        ImageObject io = new ImageObject(); 
+        ImageObject io = new ImageObject();
         io.setName(file.getOriginalFilename());
         io.setMediaType(file.getContentType());
         io.setSize(file.getSize());
         io.setContent(file.getBytes());
-        io = imageObjectRepository.save(io);        
-        
+        imageObjectRepository.save(io);
 
-        
         //old stuff
         Article article = new Article();
         article.setTitle(title);
@@ -76,7 +73,6 @@ public class UutisController {
         article.setImage(io);
         articleRepository.save(article);
 
-        
         return "redirect:/uutiset";
     }
 
@@ -84,5 +80,5 @@ public class UutisController {
     public String creation() {
         return "creation";
     }
-    
+
 }

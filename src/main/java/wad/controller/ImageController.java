@@ -47,7 +47,7 @@ public class ImageController {
     @GetMapping("/images/{id}")
     public ResponseEntity<byte[]> viewFile(@PathVariable Long id) {
 
-        ImageObject fo = imageObjectRepository.findOne(id);
+        ImageObject fo = imageObjectRepository.findById(id).get();
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(fo.getMediaType()));

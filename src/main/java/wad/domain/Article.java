@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.List; 
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /*
@@ -27,6 +28,8 @@ public class Article extends AbstractPersistable<Long>{
     private String lead; //ingressi
     private String mainText; 
     private LocalDateTime published; 
+    
+    @OneToOne
     @Lob
     private ImageObject image; 
     

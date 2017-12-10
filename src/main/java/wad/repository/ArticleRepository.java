@@ -6,6 +6,5 @@ import wad.domain.Article;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     
-    Article findById(Long id);
     
 }
