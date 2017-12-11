@@ -7,7 +7,7 @@ import wad.repository.AccountRepository;
 import wad.repository.ArticleRepository;
 
 @Service
-public class UutisService {
+public class CommonService {
     
     @Autowired
     private AccountRepository accountRepository; 

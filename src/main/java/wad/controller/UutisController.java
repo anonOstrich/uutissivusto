@@ -26,6 +26,7 @@ import wad.repository.AccountRepository;
 import wad.repository.ArticleRepository;
 import wad.repository.CategoryRepository;
 import wad.repository.ImageObjectRepository;
+import wad.service.ArticleService;
 
 @Controller
 public class UutisController {
@@ -42,20 +43,8 @@ public class UutisController {
     @Autowired
     private AccountRepository accountRepository;
 
-    @PostConstruct
-    public void init() {
-        if (categoryRepository.findAll().isEmpty()) {
-            Category category = new Category();
-            category.setName("yhteiskunta");
-            categoryRepository.save(category);
-            category = new Category();
-            category.setName("talous");
-            categoryRepository.save(category);
-            category = new Category();
-            category.setName("viihde");
-            categoryRepository.save(category);
-        }
-    }
+    @Autowired
+    private ArticleService articleService;
 
     @GetMapping("/uutiset")
     public String home(Model model) {
@@ -69,14 +58,14 @@ public class UutisController {
         if (id == null) {
             return "redirect:/uutiset";
         }
-        Article article = articleRepository.findById(id).get();
-        if (article == null) {
+        Optional<Article> optArticle = articleRepository.findById(id);
+        if (!optArticle.isPresent()) {
             return "redirect:/uutiset";
         }
-        article.addView();
-        article = articleRepository.save(article);
-        model.addAttribute("article", article);
+        Article article = optArticle.get();
+        articleService.viewArticle(article);
 
+        model.addAttribute("article", article);
         return "single";
     }
 
@@ -164,10 +153,10 @@ public class UutisController {
     }
 
     @PostMapping("/uutiset/{id}/muokkaa")
+    @Transactional
     public String modify(@PathVariable Long id,
             @RequestParam String title, @RequestParam String lead, @RequestParam String mainText,
             @RequestParam(name = "category", required = false) Long[] categories
-            
     ) {
 
         Optional<Article> optArticle = articleRepository.findById(id);
@@ -181,16 +170,22 @@ public class UutisController {
         article.setMainText(mainText);
 
         //HUOM! kuvan muutosta ei vielä toteutettu. 
-       
-        List<Category> chosenCategories = new ArrayList(); 
-        for (int i = 0; i < categories.length; i++){
+        List<Category> chosenCategories = new ArrayList();
+        for (int i = 0; i < categories.length; i++) {
             Optional<Category> optCategory = categoryRepository.findById(categories[i]);
-            if(!optCategory.isPresent()){
-                continue; 
+            if (!optCategory.isPresent()) {
+                continue;
             }
-            chosenCategories.add(optCategory.get());
+            Category category = optCategory.get();
+            List<Article> categoryArticles = category.getArticles();
+            //toimiiko vain contains kuten halutaan? 
+            if (!categoryArticles.contains(article)) {
+                categoryArticles.add(article);
+            }
+            categoryRepository.save(category);
+            chosenCategories.add(category);
         }
-        
+
         article.setCategories(chosenCategories);
         article.setModified(LocalDateTime.now());
         articleRepository.save(article);

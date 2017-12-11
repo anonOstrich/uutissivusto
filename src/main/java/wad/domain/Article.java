@@ -39,9 +39,8 @@ public class Article extends AbstractPersistable<Long> {
 
     @ManyToMany
     private List<Account> accounts;
-    
-    
-    
+       
+   
     public void addView(){
         this.addView(LocalDateTime.now());
     }

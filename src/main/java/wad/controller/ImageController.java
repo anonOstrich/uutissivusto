@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import wad.domain.ImageObject;
 import wad.repository.ImageObjectRepository;
+import wad.service.ImageService;
 
 @Controller
 public class ImageController {
 
     @Autowired
     private ImageObjectRepository imageObjectRepository;
+    
+    @Autowired
+    private ImageService imageService; 
 
     @GetMapping("/images")
     public String showAddPage(Model model) {
@@ -29,31 +33,16 @@ public class ImageController {
         return "images";
     }
 
-    @PostMapping("/images")
-    public String add(@RequestParam("file") MultipartFile file) throws IOException{
-        if(!file.getContentType().contains("image")){
-            return "redirect:/images";
-        }
-        ImageObject io = new ImageObject(); 
-        io.setName(file.getOriginalFilename());
-        io.setMediaType(file.getContentType());
-        io.setSize(file.getSize());
-        io.setContent(file.getBytes());
-        imageObjectRepository.save(io);        
-        return "redirect:/images";
-    }
 
     @Transactional
     @GetMapping("/images/{id}")
     public ResponseEntity<byte[]> viewFile(@PathVariable Long id) {
-
-        ImageObject fo = imageObjectRepository.findById(id).get();
-
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(fo.getMediaType()));
-        headers.setContentLength(fo.getSize());
-
-        return new ResponseEntity<>(fo.getContent(), headers, HttpStatus.CREATED);
+        if (imageObjectRepository.findById(id).isPresent()) {
+            return imageService.returnImageFile(id);       
+        }
+        
+        //not optimal... Will null cause an error? Should return null object (mock ResponseEntity) instead? 
+        return null; 
     }
 
 }
