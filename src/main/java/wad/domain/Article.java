@@ -15,9 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-/*
-TODO: kuvan lisääminen! Voiko yksi kuva olla monessa artikkelissa? Ei, vaikka toki samansisältöinen kuva voi.
- */
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -60,7 +58,6 @@ public class Article extends AbstractPersistable<Long> {
     }
 
     
-    //no need to be public, even for testing purposes? 
     public void deleteViewsOlderThan(LocalDateTime time) {
         if (weeklyViews != null) {
             List<LocalDateTime> deleted = new ArrayList();

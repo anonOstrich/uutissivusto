@@ -4,20 +4,41 @@
       xmlns:sec="http://www.springframework.org/security/tags">
     <head>
         <meta charset="UTF-8" />
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap-theme.min.css"/>
         <title>Kategoriat</title>
     </head>
     <body>
+        <div class="container-fluid">
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Uutissivu</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Etusivu <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
         <h1>Nykyiset kategoriat</h1>
         <ul>
             <li th:each="category : ${categories}" th:text="${category.name}">
                 Kategoria
             </li>
         </ul>
-        
+
         <form th:action="@{/kategoriat}" method="POST">
             <input type="text" name="categoryName" />
             <input type="submit" value="Lisää uusi kategoria!" />            
         </form>
-        <a th:href="@{/}">Etusivulle</a>
+        </div>
     </body>
 </html>

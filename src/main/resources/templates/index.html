@@ -51,7 +51,7 @@
                                 <span th:text="${article.title}">Otsikko</span> 
                             </a><br/>
                             <span th:if="${default}" th:text="${article.lead}">Ingressi </span><br/>
-                            Julkaistu <span  th:text="${#temporals.format(article.published, 'dd.MM.yyyy HH:mm')}">Julkaisuaika</span><br/>
+                            Julkaistu <span  th:text="${#temporals.format(article.published, 'dd.MM.yyyy')}">Julkaisuaika</span><br/>
                             <img width="200" height="200"th:src="@{~/images/{id}(id=${article.image.id})}" th:if="${default}" alt="uutiskuvitus" />
                             <a th:href="@{/uutiset/{id}/muokkaa(id=${article.id})}" sec:authorize="hasAuthority('POSTER')">Muokkaa</a>
                         </li>                

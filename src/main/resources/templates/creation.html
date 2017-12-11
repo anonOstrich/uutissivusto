@@ -5,46 +5,67 @@
     <head>
         <meta charset="UTF-8" />
         <title>Kirjoita uutinen</title>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap-theme.min.css"/>
     </head>
     <body>
-        <p>
-            <a th:href="@{/}">Palaa etusivulle</a>
-        </p>
 
-        <form th:action="@{/uutiset}" method="POST" enctype="multipart/form-data">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Uutissivu</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Etusivu <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            </div>
 
-            Otsikko: <br/>
-            <input type="text" name="title" placeholder="Otsikko"/>  <br/>
-            Ingressi: <br/>
-            <input type="textarea" name="lead" placeholder="Ingressi" /> <br/>
-            Sisältö: <br/>
-            <textarea name="mainText" placeholder="Sisältö"></textarea><br/>          
-            Lisää kuva <br/>
-            <input type="file" name="file" /> <br/>
-            Valitse kategoria(t)<br/>
+        </nav>
+
+        <div class="container-fluid">
+
+            <form th:action="@{/uutiset}" method="POST" enctype="multipart/form-data">
+
+                Otsikko: <br/>
+                <input type="text" name="title" placeholder="Otsikko"/>  <br/>
+                Ingressi: <br/>
+                <textarea name ="lead" placeholder="Ingressi" cols="100" rows ="8" ></textarea> <br/>
+                Sisältö: <br/>
+                <textarea name="mainText" placeholder="Sisältö" cols="100" rows ="15"></textarea><br/>          
+                Lisää kuva <br/>
+                <input type="file" name="file" /> <br/>
+                Valitse kategoria(t)<br/>
 
 
 
-            <ul id="categoryList">
-                <li th:each="category : ${categories}">
-                    <input type="checkbox" th:value="${category.id}" name="category" />
-                    <label  
-                        th:text="${category.name}">Heating</label>
-                </li>
-            </ul>
-            
+                <ul id="categoryList">
+                    <li th:each="category : ${categories}">
+                        <input type="checkbox" th:value="${category.id}" name="category" />
+                        <label  
+                            th:text="${category.name}">Heating</label>
+                    </li>
+                </ul>
 
-            <br/>
 
-            <input type="submit" value="Julkaise" /><br/>
-        </form>
+                <br/>
 
-        <form th:action="@{/logout}" method="POST" sec:authorize="hasAuthority('POSTER')">
-            <input type="submit" value="Kirjaudu ulos"></input>
-        </form>
+                <input type="submit" value="Julkaise" /><br/>
+            </form>
 
-  
-        <a th:href="@{/login}" sec:authorize="isAnonymous()">Kirjaudu sisään</a>
+            <form th:action="@{/logout}" method="POST" sec:authorize="hasAuthority('POSTER')">
+                <input type="submit" value="Kirjaudu ulos"></input>
+            </form>
+
+
+            <a th:href="@{/login}" sec:authorize="isAnonymous()">Kirjaudu sisään</a>
+        </div>
     </body>
+
 
 </html>

@@ -2,69 +2,94 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
     <head>
         <meta charset="UTF-8" />
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap-theme.min.css"/>
         <title th:text="${article.title}">Otsikko</title>
     </head>
     <body>
-        <h1 th:text="${article.title}">Otsikko</h1>
-        <p>Julkaistu: <span th:text="${#temporals.format(article.published, 'dd.MM.yyyy HH:mm')}">julkaistu </span><br/>
-            <span th:if="${article.modified != null}">Muokattu viimeksi:  <span th:text="${#temporals.format(article.modified, 'dd.MM.yyyy HH:mm')}">Muokkaushetki</span></span>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Uutissivu</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Etusivu <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/uutiset/{id}/muokkaa(id=${article.id})}">Muokkaa uutista<span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            </div>
 
-        </p>
-        <p><img th:src="@{~/images/{id}(id=${article.image.id})}" /></p>
-        <p><em th:text="${article.lead}">   Ingressi  </em></p>
-        <p th:text="${article.mainText}">
-            Varsinainen teksti
-        </p>
+        </nav>
+
+        <div class="container-fluid">
+
+            <h1 th:text="${article.title}">Otsikko</h1>
+            <p>Julkaistu: <span th:text="${#temporals.format(article.published, 'dd.MM.yyyy HH:mm')}">julkaistu </span><br/>
+                <span th:if="${article.modified != null}">Muokattu viimeksi:  <span th:text="${#temporals.format(article.modified, 'dd.MM.yyyy HH:mm')}">Muokkaushetki</span></span>
+
+            </p>
+            <p><img th:src="@{~/images/{id}(id=${article.image.id})}" width="450" height="350"/></p>
+            <p><em th:text="${article.lead}">   Ingressi  </em></p>
+            <p th:text="${article.mainText}">
+                Varsinainen teksti
+            </p>
 
 
-        <br/>
-        Kirjoittanut: <ul>
-            <li th:each="account : ${article.accounts}" th:text="${account.username}">Kirjoittaja</li>
-        </ul>
-
-        <h3>Kategoriat</h3>
-        <ul>
-            <li th:each="category: ${article.categories}" th:text="${category.name}">Kategorian nimi :))) </li>
-        </ul>
-
-
-        <p>
-            Viikon sisällä uutinen luettu <span th:text="${article.viewCount}">117</span> kertaa. 
-        </p>
-
-
-        <div id="ajanMukaan">
-            <h3>5 viimeisintä uutista: </h3>
-            <ul>
-                <li th:each="recentArticle : ${recentArticles}">
-                    <a th:href="@{/uutiset/{id}(id=${recentArticle.id})}" th:text="${recentArticle.title}"> Otsikko
-                    </a><span th:text="${#temporals.format(recentArticle.published, 'dd.MM.yyyy HH:mm')}">Päivämäärä</span>
-                </li>
+            <br/>
+            Kirjoittanut: <ul>
+                <li th:each="account : ${article.accounts}" th:text="${account.username}">Kirjoittaja</li>
             </ul>
-        </div>
 
-
-        <div id="maaranMukaan">
-            <h3>5 viikon luetuinta uutista</h3>
+            <h3>Kategoriat</h3>
             <ul>
-                <li th:each="popArticle : ${popularArticles}">
-                    <a th:href="@{/uutiset/{id}(id=${popArticle.id})}" th:text="${popArticle.title}">Otsikko 
-                    </a><span th:text="${#temporals.format(popArticle.published, 'dd.MM.yyyy HH:mm')}">Päivämäärä</span>
-                </li>
+                <li th:each="category: ${article.categories}" th:text="${category.name}">Kategorian nimi </li>
             </ul>
+
+
+            <p>
+                Viikon sisällä uutinen luettu <span th:text="${article.viewCount}">117</span> kertaa. 
+            </p>
+
+
+            <div class="row">
+                <div id="ajanMukaan" class="col-lg-6">
+                    <h3>5 viimeisintä uutista: </h3>
+                    <ul>
+                        <li th:each="recentArticle : ${recentArticles}">
+                            <a th:href="@{/uutiset/{id}(id=${recentArticle.id})}" th:text="${recentArticle.title}"> Otsikko</a><br/>
+                            <span th:text="${#temporals.format(recentArticle.published, 'dd.MM.yyyy HH:mm')}">Päivämäärä</span>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div id="maaranMukaan" class="col-lg-6">
+                    <h3>5 viikon luetuinta uutista</h3>
+                    <ul>
+                        <li th:each="popArticle : ${popularArticles}">
+                            <a th:href="@{/uutiset/{id}(id=${popArticle.id})}" th:text="${popArticle.title}">Otsikko</a> <br/>
+                            Katsottu <span th:text="${popArticle.viewCount}">117</span> kertaa viimeisimmän viikon aikana. 
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <form th:action="@{/logout}" method="POST" sec:authorize="hasAuthority('POSTER')">
+                <input type="submit" value="Kirjaudu ulos"></input>
+            </form>
+
+
+            <a th:href="@{/login}" sec:authorize="isAnonymous()">Kirjaudu sisään</a>
+
         </div>
-
-
-        <a th:href="@{/}">Palaa etusivulle</a>
-
-        <form th:action="@{/logout}" method="POST" sec:authorize="hasAuthority('POSTER')">
-            <input type="submit" value="Kirjaudu ulos"></input>
-        </form>
-
-
-        <a th:href="@{/login}" sec:authorize="isAnonymous()">Kirjaudu sisään</a>
-
-
     </body>
 
 </html>
