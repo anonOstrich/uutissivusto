@@ -34,7 +34,7 @@
             Otsikko: <br/>
             <input type="text" name="title" th:value="${article.title}"/>  <br/>
             Ingressi: <br/>
-            <textarea name="lead" th:value="${article.lead}" rows="8" cols="100"></textarea><br/>
+            <textarea name="lead" th:text="${article.lead}" rows="8" cols="100"></textarea><br/>
             Sisältö: <br/>
             <textarea name="mainText" th:text="${article.mainText}" rows="15" cols="100"></textarea><br/>          
             Lisää kuva <br/>
