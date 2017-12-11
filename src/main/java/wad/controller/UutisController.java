@@ -65,6 +65,8 @@ public class UutisController {
         articleService.viewArticle(article);
 
         model.addAttribute("article", article);
+        model.addAttribute("recentArticles", articleService.mostRecentArticles(5));
+        model.addAttribute("popularArticles", articleService.mostPopularArticles(5));
         return "single";
     }
 

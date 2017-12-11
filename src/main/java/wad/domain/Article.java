@@ -29,29 +29,28 @@ public class Article extends AbstractPersistable<Long> {
     private String lead; //ingressi
     private String mainText;
     private LocalDateTime published;
-    private LocalDateTime modified;
-    
+    private LocalDateTime modified;    
     @ElementCollection(fetch = FetchType.LAZY)
     private List<LocalDateTime> weeklyViews;
-
+    private int viewCount; 
     @OneToOne
     @Lob
     private ImageObject image;
-
     @ManyToMany
-    private List<Account> accounts;
-       
+    private List<Account> accounts;    
    
     public void addView(){
         this.addView(LocalDateTime.now());
+        
     }
 
     public void addView(LocalDateTime time) {
         if (weeklyViews == null) {
             weeklyViews = new ArrayList();
         }
-
+        
         weeklyViews.add(time);
+        viewCount = weeklyViews.size(); 
     }
     
     public void deleteViewsOlderThanWeek(){
@@ -71,12 +70,9 @@ public class Article extends AbstractPersistable<Long> {
                 }
             }
             weeklyViews.removeAll(deleted);
+            viewCount -= deleted.size(); 
         }
     }
     
-    public int getNumberOfViews(){
-        if (this.weeklyViews == null) return 0; 
-        return this.weeklyViews.size(); 
-    }
 
 }

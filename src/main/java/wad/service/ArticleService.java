@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -81,7 +85,7 @@ public class ArticleService {
         article.setLead(lead);
         article.setMainText(mainText);
         article.setModified(LocalDateTime.now());
-        
+
         List<Category> chosenCategories = new ArrayList();
 
         //katsotaan mitkä kaikki kategoriat on valittu, ja asetetaan näille artikkeliksi muokattu artikkeli. Näin varmistetaan, että ei ole kategoriaa
@@ -92,8 +96,7 @@ public class ArticleService {
                 continue;
             }
             Category category = optCategory.get();
-            
-            
+
             List<Article> categoryArticles = category.getArticles();
             //toimiiko vain contains kuten halutaan? 
             if (!categoryArticles.contains(article)) {
@@ -105,16 +108,26 @@ public class ArticleService {
 
         //artikkeli saa luonnollisesti valitut kategoriat riippumatta siitä, mitä sillä oli aiemmin
         article.setCategories(chosenCategories);
-        
+
         //jos on poistettu kategoria? 
-        for(Category c: categoryRepository.findAll()){
-            if(c.getArticles().contains(article) && !chosenCategories.contains(c)){
+        for (Category c : categoryRepository.findAll()) {
+            if (c.getArticles().contains(article) && !chosenCategories.contains(c)) {
                 c.getArticles().remove(article);
-                categoryRepository.save(c); 
+                categoryRepository.save(c);
             }
         }
-            
+
         articleRepository.save(article);
+    }
+
+    public Page<Article> mostRecentArticles(int n) {
+        Pageable pageable = PageRequest.of(0, n, Sort.Direction.DESC, "published");
+        return articleRepository.findAll(pageable); 
+    }
+    
+    public Page<Article> mostPopularArticles(int n){
+        Pageable pageable = PageRequest.of(0, n, Sort.Direction.DESC, "viewCount");
+        return articleRepository.findAll(pageable);
     }
 
 }

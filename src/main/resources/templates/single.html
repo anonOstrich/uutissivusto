@@ -8,7 +8,7 @@
         <h1 th:text="${article.title}">Otsikko</h1>
         <p>Julkaistu: <span th:text="${#temporals.format(article.published, 'dd.MM.yyyy HH:mm')}">julkaistu </span><br/>
             <span th:if="${article.modified != null}">Muokattu viimeksi:  <span th:text="${#temporals.format(article.modified, 'dd.MM.yyyy HH:mm')}">Muokkaushetki</span></span>
-        
+
         </p>
         <p><img th:src="@{~/images/{id}(id=${article.image.id})}" /></p>
         <p><em th:text="${article.lead}">   Ingressi  </em></p>
@@ -16,7 +16,7 @@
             Varsinainen teksti
         </p>
 
-        
+
         <br/>
         Kirjoittanut: <ul>
             <li th:each="account : ${article.accounts}" th:text="${account.username}">Kirjoittaja</li>
@@ -26,24 +26,45 @@
         <ul>
             <li th:each="category: ${article.categories}" th:text="${category.name}">Kategorian nimi :))) </li>
         </ul>
-        
-        
+
+
         <p>
-            Viikon sisällä uutinen luettu <span th:text="${article.numberOfViews}">117</span> kertaa. 
+            Viikon sisällä uutinen luettu <span th:text="${article.viewCount}">117</span> kertaa. 
         </p>
 
 
+        <div id="ajanMukaan">
+            <h3>5 viimeisintä uutista: </h3>
+            <ul>
+                <li th:each="recentArticle : ${recentArticles}">
+                    <a th:href="@{/uutiset/{id}(id=${recentArticle.id})}" th:text="${recentArticle.title}"> Otsikko
+                    </a><span th:text="${#temporals.format(recentArticle.published, 'dd.MM.yyyy HH:mm')}">Päivämäärä</span>
+                </li>
+            </ul>
+        </div>
+
+
+        <div id="maaranMukaan">
+            <h3>5 viikon luetuinta uutista</h3>
+            <ul>
+                <li th:each="popArticle : ${popularArticles}">
+                    <a th:href="@{/uutiset/{id}(id=${popArticle.id})}" th:text="${popArticle.title}">Otsikko 
+                    </a><span th:text="${#temporals.format(popArticle.published, 'dd.MM.yyyy HH:mm')}">Päivämäärä</span>
+                </li>
+            </ul>
+        </div>
+
 
         <a th:href="@{/}">Palaa etusivulle</a>
-        
+
         <form th:action="@{/logout}" method="POST" sec:authorize="hasAuthority('POSTER')">
             <input type="submit" value="Kirjaudu ulos"></input>
         </form>
 
-  
+
         <a th:href="@{/login}" sec:authorize="isAnonymous()">Kirjaudu sisään</a>
-        
-        
+
+
     </body>
 
 </html>
