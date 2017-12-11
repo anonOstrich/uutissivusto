@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 import java.util.List; 
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import wad.domain.Article; 
 
 
 @Entity

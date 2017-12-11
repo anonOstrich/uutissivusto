@@ -6,10 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import wad.domain.Account;
-import wad.domain.Article;
 import wad.domain.Category;
 import wad.repository.AccountRepository;
-import wad.repository.ArticleRepository;
 import wad.repository.CategoryRepository;
 
 @Controller

@@ -36,8 +36,11 @@
 
             </p>
             <p><img th:src="@{~/images/{id}(id=${article.image.id})}" width="450" height="350"/></p>
-            <p><em th:text="${article.lead}">   Ingressi  </em></p>
-            <p th:text="${article.mainText}">
+            
+            <!--Alla oleva mahdollistaa sen, että thymeleaf tuottaa myös rivinvaihdot siten kun tallennettu --> 
+            <p><em th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(article.lead),'\n','&lt;br /&gt;'))}">   Ingressi  </em></p>            
+            <p th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(article.mainText),'\n','&lt;br /&gt;'))}">
+               
                 Varsinainen teksti
             </p>
 
