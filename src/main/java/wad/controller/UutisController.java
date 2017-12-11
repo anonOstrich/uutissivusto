@@ -9,6 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import wad.domain.Account;
 import wad.domain.Article;
 import wad.domain.Category;
 import wad.domain.ImageObject;
+import wad.repository.AccountRepository;
 import wad.repository.ArticleRepository;
 import wad.repository.CategoryRepository;
 import wad.repository.ImageObjectRepository;
@@ -34,6 +38,9 @@ public class UutisController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    
+    @Autowired
+    private AccountRepository accountRepository; 
 
     @PostConstruct
     public void init() {
@@ -66,6 +73,8 @@ public class UutisController {
         if (article == null) {
             return "redirect:/uutiset";
         }
+        article.addView();
+        article = articleRepository.save(article);
         model.addAttribute("article", article);
 
         return "single";
@@ -74,12 +83,11 @@ public class UutisController {
     @Transactional
     @PostMapping("/uutiset")
     public String add(@RequestParam String title, @RequestParam String lead, @RequestParam String mainText,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime published,
             @RequestParam("file") MultipartFile file,
             @RequestParam(name = "category", required = false) Long[] categories
     ) throws IOException {
 
-        if (!file.getContentType().contains("image")) {
+        if (!file.getContentType().contains("image") || file.getContentType().contains("gif")) {
             return "redirect:/uutiset";
         }
 
@@ -98,7 +106,7 @@ public class UutisController {
         article.setTitle(title);
         article.setLead(lead);
         article.setMainText(mainText);
-        article.setPublished(published);
+        article.setPublished(LocalDateTime.now());
         article.setImage(io);
 
         Category category = null;
@@ -114,6 +122,13 @@ public class UutisController {
             categoryRepository.save(category);
         }
         article.setCategories(articleCategories);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        //lisätään käyttäjä
+        List<Account> accounts = new ArrayList(); 
+        accounts.add(accountRepository.findByUsername(username));
+        article.setAccounts(accounts);               
         articleRepository.save(article);
         return "redirect:/uutiset";
     }
@@ -141,9 +156,9 @@ public class UutisController {
             @RequestParam String title, @RequestParam String lead, @RequestParam String mainText,
             @RequestParam(name = "category", required = false) Long[] categories
     ) {
-        
+
         Optional<Article> optArticle = articleRepository.findById(id);
-        
+
         if (!optArticle.isPresent()) {
             return "redirect:/uutiset";
         }
@@ -151,7 +166,7 @@ public class UutisController {
         article.setTitle(title);
         article.setLead(lead);
         article.setMainText(mainText);
-        
+
         //HUOM! kategorioiden tai kuvan muutosta ei vielä toteutettu. 
         article.setModified(LocalDateTime.now());
         articleRepository.save(article);

@@ -5,18 +5,32 @@
         <title th:text="${article.title}">Otsikko</title>
     </head>
     <body>
-        <h1 th:text="${article.title}">Otsikko</h1> <span th:text="${article.published}">julkaistu </span>
+        <h1 th:text="${article.title}">Otsikko</h1>
+        <p>Julkaistu: <span th:text="${article.published}">julkaistu </span><br/>
+            <span th:if="${article.modified != null}">Muokattu viimeksi:  <span th:text="${article.modified}">Muokkaushetki</span></span>
+        
+        </p>
         <p><img th:src="@{~/images/{id}(id=${article.image.id})}" /></p>
         <p><em th:text="${article.lead}">   Ingressi  </em></p>
         <p th:text="${article.mainText}">
             Varsinainen teksti
         </p>
 
+        
+        <br/>
+        Kirjoittanut: <ul>
+            <li th:each="account : ${article.accounts}" th:text="${account.username}">Kirjoittaja</li>
+        </ul>
 
         <h3>Kategoriat</h3>
         <ul>
             <li th:each="category: ${article.categories}" th:text="${category.name}">Kategorian nimi :))) </li>
         </ul>
+        
+        
+        <p>
+            Viikon sisällä uutinen luettu <span th:text="${article.numberOfViews}">117</span> kertaa. 
+        </p>
 
 
 

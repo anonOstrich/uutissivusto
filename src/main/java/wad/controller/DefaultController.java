@@ -24,13 +24,18 @@ public class DefaultController {
     
     @PostConstruct
     public void init(){
-        Account account = accountRepository.findByUsername("kayttaja");
+        Account account = accountRepository.findByUsername("esko");
         if(account != null){
             return;
         }
         account = new Account(); 
-        account.setUsername("kayttaja");
+        account.setUsername("esko");
         account.setPassword(passwordEncoder.encode("123"));
+        accountRepository.save(account);
+        
+        account = new Account(); 
+        account.setUsername("lilja");
+        account.setPassword(passwordEncoder.encode("abc"));
         accountRepository.save(account);
         
     }
