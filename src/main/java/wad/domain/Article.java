@@ -14,6 +14,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.hibernate.annotations.Type;
 
 
 @Entity
@@ -25,7 +26,9 @@ public class Article extends AbstractPersistable<Long> {
     @ManyToMany
     private List<Category> categories;
     private String title;
+    @Type(type = "text")
     private String lead; //ingressi
+    @Type(type = "text")
     private String mainText;
     private LocalDateTime published;
     private LocalDateTime modified;    
