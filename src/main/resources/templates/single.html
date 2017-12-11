@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
     <head>
         <meta charset="UTF-8" />
         <title th:text="${article.title}">Otsikko</title>
@@ -11,16 +11,25 @@
         <p th:text="${article.mainText}">
             Varsinainen teksti
         </p>
-        
-        
+
+
         <h3>Kategoriat</h3>
         <ul>
             <li th:each="category: ${article.categories}" th:text="${category.name}">Kategorian nimi :))) </li>
         </ul>
-        
-        
+
+
 
         <a th:href="@{/}">Palaa etusivulle</a>
+        
+        <form th:action="@{/logout}" method="POST" sec:authorize="hasAuthority('POSTER')">
+            <input type="submit" value="Kirjaudu ulos"></input>
+        </form>
+
+  
+        <a th:href="@{/login}" sec:authorize="isAnonymous()">Kirjaudu sisään</a>
+        
+        
     </body>
 
 </html>
