@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.ElementCollection;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
@@ -35,6 +36,7 @@ public class Article extends AbstractPersistable<Long> {
     private int viewCount; 
     @OneToOne
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     private ImageObject image;
     @ManyToMany
     private List<Account> accounts;    

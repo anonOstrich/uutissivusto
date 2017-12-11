@@ -110,7 +110,7 @@ public class ArticleService {
         //artikkeli saa luonnollisesti valitut kategoriat riippumatta siitä, mitä sillä oli aiemmin
         article.setCategories(chosenCategories);
 
-        //jos on poistettu kategoria? 
+        //jos on poistettu kategoria
         for (Category c : categoryRepository.findAll()) {
             if (c.getArticles().contains(article) && !chosenCategories.contains(c)) {
                 c.getArticles().remove(article);
@@ -118,6 +118,14 @@ public class ArticleService {
             }
         }
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account editor = accountRepository.findByUsername(username);
+        if(editor != null){
+            if(!article.getAccounts().contains(editor)){
+                article.getAccounts().add(editor);
+            }
+        }
         articleRepository.save(article);
     }
 
