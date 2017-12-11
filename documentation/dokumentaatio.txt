@@ -13,11 +13,14 @@ Tyypilliset ominaisuudet:
 Kaikki uutiset listattuna etusivulla. Uutisia voivat katsoa kaikki, kirjoittaa vain kirjoittajat ja muokata vain kyseisen uutisen kirjoittajat.
 
 Käytetyn tietokannan skeema: 
-CREATE TABLE Account(id long primary_key, username varchar, password varchar);
-CREATE TABLE Article(id long primary_key, title varchar, lead varchar, main_text varchar, modified datetime, published datetime, view_count long, image);
-CREATE TABLE Category();
-CREATE TABLE Article();
-CREATE TABLE Image_Object();
+CREATE TABLE ACCOUNT(id long primary_key, username varchar, password varchar);
+CREATE TABLE ARTICLE(id long primary_key, title varchar, lead varchar, main_text varchar, modified datetime, published datetime, view_count long, image_id long, FOREIGN KEY(image_id) REFERENCES Image_Object(id));
+CREATE TABLE CATEGORY(id long primary key, name varchar chosen boolean);
+CREATE TABLE IMAGE_OBJECT(id long primary_key, content blob, media_type varchar, name varchar, size long);
+CREATE TABLE ARTICLE_ACCOUNTS(articles_id long, accounts_id long, FOREIGN KEY(articles_id) REFERENCES Article(id), FOREIGN KEY(accounts_id) REFERENCES Account(id));
+CREATE TABLE ARTICLE_CATEGORIES(articles_id long, categories_id long, FOREIGN KEY(articles_id) REFERENCES Article(id), FOREIGN KEY(categories_id) REFERENCES Category(id));
+CREATE TABLE ARTICLE_WEEKLY_VIEWS(articles_id long, weekly_views timestamp, FOREIGN KEY(articles_id) REFERENCES Article(id));
+
 
 
 Käyttöohje: 
