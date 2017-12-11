@@ -25,7 +25,7 @@ public class CategoryServiceTest {
 
     @Before
     public void setUp() {
-        
+        categoryRepository.deleteAll();
     }
 
     
