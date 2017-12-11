@@ -121,8 +121,8 @@ public class ArticleService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Account editor = accountRepository.findByUsername(username);
-        if(editor != null){
-            if(!article.getAccounts().contains(editor)){
+        if (editor != null) {
+            if (!article.getAccounts().contains(editor)) {
                 article.getAccounts().add(editor);
             }
         }
@@ -141,12 +141,17 @@ public class ArticleService {
 
     public void addArticlesForFrontpage(Model model, String view, String category, String direction) {
 
-        int n = (int) articleRepository.count();
         Page<Article> articles;
         model.addAttribute("default", false);
+        model.addAttribute("categories", categoryRepository.findAll());
 
+        int n = (int) articleRepository.count();
+        if(n == 0){
+            return; 
+        }
+        
         if (view.equals("julkaisupaiva")) {
-            if (view.equals("desc")) {
+            if (direction.equals("desc")) {
                 articles = this.mostRecentArticles(n);
             } else {
                 Pageable pageable = PageRequest.of(0, n, Sort.Direction.ASC, "viewCount");
@@ -158,6 +163,8 @@ public class ArticleService {
             List<Article> articleList = categoryRepository.findByName(category).getArticles();
             model.addAttribute("articles", articleList);
             return;
+        } else if (view.equals("katsannat")) {
+            articles = this.mostPopularArticles(n);
         } else {
             model.addAttribute("default", true);
             articles = this.mostRecentArticles(5);
