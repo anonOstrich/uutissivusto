@@ -45,6 +45,7 @@ public class UutisController {
     @Autowired
     private CategoryService categoryService;
 
+    @Transactional
     @GetMapping("/uutiset")
     public String home(Model model, @RequestParam(defaultValue = "viisiUusinta") String view, @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "desc") String direction) {

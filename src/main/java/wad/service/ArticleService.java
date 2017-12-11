@@ -143,6 +143,7 @@ public class ArticleService {
 
         int n = (int) articleRepository.count();
         Page<Article> articles;
+        model.addAttribute("default", false);
 
         if (view.equals("julkaisupaiva")) {
             if (view.equals("desc")) {
