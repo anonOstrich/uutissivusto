@@ -28,6 +28,7 @@ public class Article extends AbstractPersistable<Long>{
     private String lead; //ingressi
     private String mainText; 
     private LocalDateTime published; 
+    private LocalDateTime modified; 
     
     @OneToOne
     @Lob

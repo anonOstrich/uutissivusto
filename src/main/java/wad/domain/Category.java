@@ -19,4 +19,13 @@ public class Category extends AbstractPersistable<Long> {
     private String name; 
     @ManyToMany(mappedBy = "categories")
     private List<Article> articles; 
+    
+   @Override
+   public boolean equals(Object o){
+    if (o == null || o.getClass() != this.getClass()){
+        return false; 
+    }
+        Category verrattava = (Category) o;
+        return this.name.equals(verrattava.getName());
+   }
 }

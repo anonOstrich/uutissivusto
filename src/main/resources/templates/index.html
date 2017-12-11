@@ -14,6 +14,7 @@
                 </a>
                 <span th:text="${article.lead}">Ingressi </span>
                 <span th:text="${article.published}"></span>
+                <a th:href="@{/uutiset/{id}/muokkaa(id=${article.id})}" sec:authorize="hasAuthority('POSTER')">Muokkaa</a>
             </li>                
         </ul>
 

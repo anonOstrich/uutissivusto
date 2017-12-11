@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Muokkaa uutista</title>
+    </head>
+    <body>
+        <p>
+            <a th:href="@{/}">Palaa etusivulle (muutokset eivät tallennu)</a>
+        </p>
+
+        <form th:action="@{/uutiset/{id}/muokkaa(id=${article.id})}" method="POST">
+
+            Otsikko: <br/>
+            <input type="text" name="title" th:value="${article.title}"/>  <br/>
+            Ingressi: <br/>
+            <input type="textarea" name="lead" th:value="${article.lead}" /> <br/>
+            Sisältö: <br/>
+            <textarea name="mainText" th:text="${article.mainText}"></textarea><br/>          
+            Lisää kuva <br/>
+            
+            Valitse kategoria(t)<br/>
+            <ul>
+                <li th:each="category : ${categories}">
+                    <input type="checkbox" th:value="${category.id}" name="category"/>
+                    <label  
+                        th:text="${category.name}">Heating</label>
+                </li>
+            </ul>
+
+            <br/>
+
+            <input type="submit" value="Tallenna muokkaukset" /><br/>
+        </form>
+
+        <form th:action="@{/logout}" method="POST" sec:authorize="hasAuthority('POSTER')">
+            <input type="submit" value="Kirjaudu ulos"></input>
+        </form>
+
+  
+        <a th:href="@{/login}" sec:authorize="isAnonymous()">Kirjaudu sisään</a>
+
+
+    </body>
+
+</html>

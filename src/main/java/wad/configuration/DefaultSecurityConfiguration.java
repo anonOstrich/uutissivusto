@@ -29,10 +29,11 @@ public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/h2-console/*").permitAll()
-                .antMatchers("/images").authenticated()
                 .antMatchers(HttpMethod.POST, "/uutiset").authenticated()
-                .antMatchers(HttpMethod.GET, "/uutiset/*").permitAll()
+                .antMatchers(HttpMethod.GET, "uutiset/*/muokkaa").authenticated()
+                .antMatchers(HttpMethod.POST, "/muokkaa/*/muokkaa").authenticated()
                 .antMatchers("/lisaa").authenticated()
+                .antMatchers("/images/*").permitAll()
                 .anyRequest().permitAll();
         
         http.formLogin()

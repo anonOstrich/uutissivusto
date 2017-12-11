@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,13 +100,13 @@ public class UutisController {
         article.setMainText(mainText);
         article.setPublished(published);
         article.setImage(io);
-        
-        Category category = null; 
-        List<Category> articleCategories = new ArrayList(); 
-        for (int i = 0; i < categories.length; i++){
+
+        Category category = null;
+        List<Category> articleCategories = new ArrayList();
+        for (int i = 0; i < categories.length; i++) {
             category = categoryRepository.findById(categories[i]).get();
             List<Article> articles = category.getArticles();
-            if(!articles.contains(article)){
+            if (!articles.contains(article)) {
                 articles.add(article);
             }
             category.setArticles(articles);
@@ -121,6 +122,41 @@ public class UutisController {
     public String creation(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
         return "creation";
+    }
+
+    @GetMapping("/uutiset/{id}/muokkaa")
+    public String startModification(@PathVariable Long id, Model model) {
+        Optional<Article> optArticle = articleRepository.findById(id);
+        if (!optArticle.isPresent()) {
+            return "redirect:/uutiset";
+        }
+        Article article = optArticle.get();
+        model.addAttribute("article", article);
+        model.addAttribute("categories", categoryRepository.findAll());
+        return "modify";
+    }
+
+    @PostMapping("/uutiset/{id}/muokkaa")
+    public String modify(@PathVariable Long id,
+            @RequestParam String title, @RequestParam String lead, @RequestParam String mainText,
+            @RequestParam(name = "category", required = false) Long[] categories
+    ) {
+        
+        Optional<Article> optArticle = articleRepository.findById(id);
+        
+        if (!optArticle.isPresent()) {
+            return "redirect:/uutiset";
+        }
+        Article article = optArticle.get();
+        article.setTitle(title);
+        article.setLead(lead);
+        article.setMainText(mainText);
+        
+        //HUOM! kategorioiden tai kuvan muutosta ei vielä toteutettu. 
+        article.setModified(LocalDateTime.now());
+        articleRepository.save(article);
+
+        return "redirect:/uutiset";
     }
 
 }
