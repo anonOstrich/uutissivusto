@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import wad.domain.Account;
 import wad.domain.Article;
@@ -122,12 +123,39 @@ public class ArticleService {
 
     public Page<Article> mostRecentArticles(int n) {
         Pageable pageable = PageRequest.of(0, n, Sort.Direction.DESC, "published");
-        return articleRepository.findAll(pageable); 
+        return articleRepository.findAll(pageable);
     }
-    
-    public Page<Article> mostPopularArticles(int n){
+
+    public Page<Article> mostPopularArticles(int n) {
         Pageable pageable = PageRequest.of(0, n, Sort.Direction.DESC, "viewCount");
         return articleRepository.findAll(pageable);
+    }
+
+    public void addArticlesForFrontpage(Model model, String view, String category, String direction) {
+
+        int n = (int) articleRepository.count();
+        Page<Article> articles;
+
+        if (view.equals("julkaisupaiva")) {
+            if (view.equals("desc")) {
+                articles = this.mostRecentArticles(n);
+            } else {
+                Pageable pageable = PageRequest.of(0, n, Sort.Direction.ASC, "viewCount");
+                articles = articleRepository.findAll(pageable);
+            }
+
+        } else if (view.equals("kategoria") && category != null && categoryRepository.findByName(category) != null) {
+
+            List<Article> articleList = categoryRepository.findByName(category).getArticles();
+            model.addAttribute("articles", articleList);
+            return;
+        } else {
+            model.addAttribute("default", true);
+            articles = this.mostRecentArticles(5);
+
+        }
+        model.addAttribute("articles", articles);
+
     }
 
 }

@@ -46,8 +46,9 @@ public class UutisController {
     private CategoryService categoryService;
 
     @GetMapping("/uutiset")
-    public String home(Model model) {
-        model.addAttribute("articles", articleRepository.findAll());
+    public String home(Model model, @RequestParam(defaultValue = "viisiUusinta") String view, @RequestParam(required = false) String category,
+            @RequestParam(defaultValue = "desc") String direction) {
+        articleService.addArticlesForFrontpage(model, view, category, direction);
         return "index";
     }
 
@@ -69,7 +70,6 @@ public class UutisController {
         model.addAttribute("popularArticles", articleService.mostPopularArticles(5));
         return "single";
     }
-
 
     @Transactional
     @PostMapping("/uutiset")
@@ -95,7 +95,6 @@ public class UutisController {
         return "creation";
     }
 
- 
     @GetMapping("/uutiset/{id}/muokkaa")
     public String startModification(@PathVariable Long id, Model model) {
         Optional<Article> optArticle = articleRepository.findById(id);
@@ -108,7 +107,6 @@ public class UutisController {
         return "modify";
     }
 
-
     @PostMapping("/uutiset/{id}/muokkaa")
     @Transactional
     public String modify(@PathVariable Long id,
@@ -116,10 +114,10 @@ public class UutisController {
             @RequestParam(name = "category", required = false) Long[] categories) {
 
         Optional<Article> optArticle = articleRepository.findById(id);
-        if (id == null || !optArticle.isPresent() || categories == null || title.trim().isEmpty() ||
-                lead.trim().isEmpty() || mainText.trim().isEmpty()) {
+        if (id == null || !optArticle.isPresent() || categories == null || title.trim().isEmpty()
+                || lead.trim().isEmpty() || mainText.trim().isEmpty()) {
             return "redirect:/uutiset";
-        }        
+        }
         articleService.updateArticle(optArticle.get(), title, lead, mainText, categories);
         return "redirect:/uutiset";
     }
