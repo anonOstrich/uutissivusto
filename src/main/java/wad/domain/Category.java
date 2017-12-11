@@ -18,7 +18,9 @@ import wad.domain.Article;
 public class Category extends AbstractPersistable<Long> {
     private String name; 
     @ManyToMany(mappedBy = "categories")
-    private List<Article> articles; 
+    private List<Article> articles;
+    // Käytetään vain uutisen muokkaamisessa - uutisella olevat kategoriat on valmiiksi rastitettu 
+    private boolean chosen;
     
    @Override
    public boolean equals(Object o){

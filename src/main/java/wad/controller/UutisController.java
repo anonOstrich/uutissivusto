@@ -38,9 +38,9 @@ public class UutisController {
 
     @Autowired
     private CategoryRepository categoryRepository;
-    
+
     @Autowired
-    private AccountRepository accountRepository; 
+    private AccountRepository accountRepository;
 
     @PostConstruct
     public void init() {
@@ -126,9 +126,9 @@ public class UutisController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         //lisätään käyttäjä
-        List<Account> accounts = new ArrayList(); 
+        List<Account> accounts = new ArrayList();
         accounts.add(accountRepository.findByUsername(username));
-        article.setAccounts(accounts);               
+        article.setAccounts(accounts);
         articleRepository.save(article);
         return "redirect:/uutiset";
     }
@@ -145,9 +145,21 @@ public class UutisController {
         if (!optArticle.isPresent()) {
             return "redirect:/uutiset";
         }
+
         Article article = optArticle.get();
+
+        //might take up some performance w/ high number of categories/ multiple modifications
+        List<Category> categories = categoryRepository.findAll();
+
+        for (Category category : categories) {
+            if (article.getCategories().contains(category)) {
+                category.setChosen(true);
+            } else {
+                category.setChosen(false);
+            }
+        }
         model.addAttribute("article", article);
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute("categories", categories);
         return "modify";
     }
 
@@ -155,11 +167,12 @@ public class UutisController {
     public String modify(@PathVariable Long id,
             @RequestParam String title, @RequestParam String lead, @RequestParam String mainText,
             @RequestParam(name = "category", required = false) Long[] categories
+            
     ) {
 
         Optional<Article> optArticle = articleRepository.findById(id);
 
-        if (!optArticle.isPresent()) {
+        if (!optArticle.isPresent() || categories == null) {
             return "redirect:/uutiset";
         }
         Article article = optArticle.get();
@@ -167,7 +180,18 @@ public class UutisController {
         article.setLead(lead);
         article.setMainText(mainText);
 
-        //HUOM! kategorioiden tai kuvan muutosta ei vielä toteutettu. 
+        //HUOM! kuvan muutosta ei vielä toteutettu. 
+       
+        List<Category> chosenCategories = new ArrayList(); 
+        for (int i = 0; i < categories.length; i++){
+            Optional<Category> optCategory = categoryRepository.findById(categories[i]);
+            if(!optCategory.isPresent()){
+                continue; 
+            }
+            chosenCategories.add(optCategory.get());
+        }
+        
+        article.setCategories(chosenCategories);
         article.setModified(LocalDateTime.now());
         articleRepository.save(article);
 

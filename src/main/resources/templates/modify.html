@@ -24,7 +24,7 @@
             Valitse kategoria(t)<br/>
             <ul>
                 <li th:each="category : ${categories}">
-                    <input type="checkbox" th:value="${category.id}" name="category"/>
+                    <input type="checkbox" th:value="${category.id}" name="category" th:checked="${category.chosen}"/>
                     <label  
                         th:text="${category.name}">Heating</label>
                 </li>
