@@ -11,9 +11,9 @@
             <li th:each="article: ${articles}">
                 <a th:href="@{/uutiset/{id}(id=${article.id})}">
                     <span th:text="${article.title}">Otsikko</span> 
-                </a>
-                <span th:text="${article.lead}">Ingressi </span>
-                <span th:text="${article.published}"></span>
+                </a><br/>
+                <span th:text="${article.lead}">Ingressi </span><br/>
+                Julkaistu <span  th:text="${#temporals.format(article.published, 'dd.MM.yyyy HH:mm')}">Julkaisuaika</span><br/>
                 <a th:href="@{/uutiset/{id}/muokkaa(id=${article.id})}" sec:authorize="hasAuthority('POSTER')">Muokkaa</a>
             </li>                
         </ul>
