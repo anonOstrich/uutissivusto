@@ -8,13 +8,7 @@ import wad.repository.ArticleRepository;
 
 @Service
 public class CommonService {
-    
-    @Autowired
-    private AccountRepository accountRepository; 
-    
-    @Autowired
-    private ArticleRepository articleRepository; 
-    
+          
     
     
 }

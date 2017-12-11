@@ -30,6 +30,7 @@ public class Article extends AbstractPersistable<Long> {
     private String mainText;
     private LocalDateTime published;
     private LocalDateTime modified;
+    
     @ElementCollection(fetch = FetchType.LAZY)
     private List<LocalDateTime> weeklyViews;
 
