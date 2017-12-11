@@ -1,8 +1,8 @@
-Sovellus mahdollistaa jokaisen lukea uutisia ja selailla n‰it‰ esimerkiksi tuoreuden tai suosion perusteella. Valtuutetut kirjautuneet k‰ytt‰j‰t
-voivat myˆs kirjoittaa uusia uutisia ja myˆs muokata n‰it‰ j‰lkik‰teen. Uutisella voi olla useampi kirjoittaja ja useampi kategoria. Kuvia jokaiseen
+Sovellus mahdollistaa jokaisen lukea uutisia ja selailla n√§it√§ esimerkiksi tuoreuden tai suosion perusteella. Valtuutetut kirjautuneet k√§ytt√§j√§t
+voivat my√∂s kirjoittaa uusia uutisia ja my√∂s muokata n√§it√§ j√§lkik√§teen. Uutisella voi olla useampi kirjoittaja ja useampi kategoria. Kuvia jokaiseen
 uutiseen liittyy tasan yksi. 
 
-Tyypillisi‰ k‰yttˆtapauksia: 
+Tyypillisi√§ k√§ytt√∂tapauksia: 
 As a user I want to see all the news articles at the same time so that I can choose those that interest me.
 As a poster I want to write a piece of news so that everyone can access it. 
 As a poster I want to modify my earlier article so that new information can be added / errors can be fixed.
@@ -12,27 +12,34 @@ As a user I want to view all the information of a particular news article so tha
 Tyypilliset ominaisuudet: 
 Kaikki uutiset listattuna etusivulla. Uutisia voivat katsoa kaikki, kirjoittaa vain kirjoittajat ja muokata vain kyseisen uutisen kirjoittajat.
 
-K‰ytetyn tietokannan skeema: 
+K√§ytetyn tietokannan skeema: 
+CREATE TABLE ACCOUNT(id long primary_key, username varchar, password varchar);
+CREATE TABLE ARTICLE(id long primary_key, title varchar, lead varchar, main_text varchar, modified datetime, published datetime, view_count long, image_id long, FOREIGN KEY(image_id) REFERENCES Image_Object(id));
+CREATE TABLE CATEGORY(id long primary key, name varchar chosen boolean);
+CREATE TABLE IMAGE_OBJECT(id long primary_key, content blob, media_type varchar, name varchar, size long);
+CREATE TABLE ARTICLE_ACCOUNTS(articles_id long, accounts_id long, FOREIGN KEY(articles_id) REFERENCES Article(id), FOREIGN KEY(accounts_id) REFERENCES Account(id));
+CREATE TABLE ARTICLE_CATEGORIES(articles_id long, categories_id long, FOREIGN KEY(articles_id) REFERENCES Article(id), FOREIGN KEY(categories_id) REFERENCES Category(id));
+CREATE TABLE ARTICLE_WEEKLY_VIEWS(articles_id long, weekly_views timestamp, FOREIGN KEY(articles_id) REFERENCES Article(id));
 
 
 
-K‰yttˆohje: 
-Mene osoitteeseen vanhaset.herokuapp.com, jolloin p‰‰dyt sovelluksen etusivulle. Voit tutkia kirjautumatta uutisten listaa. Voit j‰rjest‰‰ uutiset
-niiden tuoreuden tai suosion mukaan valitsemalla sopivan vaihtoehdon navigaatiopalkista. Valitsemalla oikealla olevasta listasta kategorian, n‰et 
-kaikki sen kategorian uutiset. Voit myˆs painaa mink‰ tahansa uutisen otsikkoa, jolloin p‰‰set lukemaan kyseisen uutisen varsinaisen tekstin. 
+K√§ytt√∂ohje: 
+Mene osoitteeseen vanhaset.herokuapp.com, jolloin p√§√§dyt sovelluksen etusivulle. Voit tutkia kirjautumatta uutisten listaa. Voit j√§rjest√§√§ uutiset
+niiden tuoreuden tai suosion mukaan valitsemalla sopivan vaihtoehdon navigaatiopalkista. Valitsemalla oikealla olevasta listasta kategorian, n√§et 
+kaikki sen kategorian uutiset. Voit my√∂s painaa mink√§ tahansa uutisen otsikkoa, jolloin p√§√§set lukemaan kyseisen uutisen varsinaisen tekstin. 
 
-Rekisterˆitymismahdollisuutta ei ole, mutta tietokantaan on luotu valmiiksi kaksi k‰ytt‰j‰‰: k‰ytt‰j‰nimi esko, salasana 123 ja k‰ytt‰j‰nimi lilja, salasana abc. 
-Painamalla etusivulla "kirjoita uutinen" voit syˆtt‰‰ jommankumman tunnuksen tiedot kirjautumissivulla. Voit kirjoittaa uutisen, ja lis‰ksi sinun 
-t‰ytyy liitt‰‰ kuva ja valita ainakin yksi kategoria. 
-Kirjautuneena voit myˆs muokata kaikkia uutisia. Lis‰ksi etusivun alaosasta voit siirty‰ sivulle jossa pystyt lis‰‰m‰‰n uusia kategorioita valittavaksi. 
+Rekister√∂itymismahdollisuutta ei ole, mutta tietokantaan on luotu valmiiksi kaksi k√§ytt√§j√§√§: k√§ytt√§j√§nimi esko, salasana 123 ja k√§ytt√§j√§nimi lilja, salasana abc. 
+Painamalla etusivulla "kirjoita uutinen" voit sy√∂tt√§√§ jommankumman tunnuksen tiedot kirjautumissivulla. Voit kirjoittaa uutisen, ja lis√§ksi sinun 
+t√§ytyy liitt√§√§ kuva ja valita ainakin yksi kategoria. 
+Kirjautuneena voit my√∂s muokata kaikkia uutisia. Lis√§ksi etusivun alaosasta voit siirty√§ sivulle jossa pystyt lis√§√§m√§√§n uusia kategorioita valittavaksi. 
 
 Asennusohje: 
-Ei asennusta, normaali web-selain riitt‰‰. Sovelluksen toimintaa testattu ainoastaan uusimmilla Firefox- ja Chrome-selaimilla. 
+Ei asennusta, normaali web-selain riitt√§√§. Sovelluksen toimintaa testattu ainoastaan uusimmilla Firefox- ja Chrome-selaimilla. 
 
 Puuttuvat ominaisuudet ja muut puutteet: 
-Sovelluksen testit ovat hyvin v‰h‰iset, eik‰ datan autentisointiin ole k‰ytetty riitt‰v‰‰ vaivaa. Osoittautui myˆs yll‰tt‰v‰n haastavaksi toteuttaa sivujen 
-ulkoasu, joten etenkin pienemmill‰ ruuduilla ne saattavat n‰ytt‰‰ melko oudoilta. Nykyisell‰‰n kirjautunut k‰ytt‰j‰ voi muokata kenen tahansa uutisia: 
-parempi olisi ehk‰ ett‰ olisi erillinen ADMIN-roolin omistava k‰ytt‰j‰, jolla on t‰llainen oikeus. 
-Myˆs muut kuin uutisten kirjoittajat hyˆtyisiv‰t rekisterˆitymismahdollisuudesta. He voisivat tallentaa omia tietojaan pysyv‰sti tietokantaan. 
-Olisi esimerkiksi mahdollista suodattaa tiettyj‰ kategorioita kokonaan. Nykyisell‰‰n k‰ytt‰j‰tunnukset ja salasanat lˆytyv‰t sellaisenaan GitHubin tiedostoista, 
-mik‰ ei olisi toivottavaa jos kyseess‰ ei olisi testik‰yttˆˆn tarkoitettu projekti. 
+Sovelluksen testit ovat hyvin v√§h√§iset, eik√§ datan autentisointiin ole k√§ytetty riitt√§v√§√§ vaivaa. Osoittautui my√∂s yll√§tt√§v√§n haastavaksi toteuttaa sivujen 
+ulkoasu, joten etenkin pienemmill√§ ruuduilla ne saattavat n√§ytt√§√§ melko oudoilta. Nykyisell√§√§n kirjautunut k√§ytt√§j√§ voi muokata kenen tahansa uutisia: 
+parempi olisi ehk√§ ett√§ olisi erillinen ADMIN-roolin omistava k√§ytt√§j√§, jolla on t√§llainen oikeus. 
+My√∂s muut kuin uutisten kirjoittajat hy√∂tyisiv√§t rekister√∂itymismahdollisuudesta. He voisivat tallentaa omia tietojaan pysyv√§sti tietokantaan. 
+Olisi esimerkiksi mahdollista suodattaa tiettyj√§ kategorioita kokonaan. Nykyisell√§√§n k√§ytt√§j√§tunnukset ja salasanat l√∂ytyv√§t sellaisenaan GitHubin tiedostoista, 
+mik√§ ei olisi toivottavaa jos kyseess√§ ei olisi testik√§ytt√∂√∂n tarkoitettu projekti. 
