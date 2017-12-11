@@ -25,13 +25,14 @@
 
 
 
-            <ul>
+            <ul id="categoryList">
                 <li th:each="category : ${categories}">
                     <input type="checkbox" th:value="${category.id}" name="category" />
                     <label  
                         th:text="${category.name}">Heating</label>
                 </li>
             </ul>
+            
 
             <br/>
 
@@ -44,8 +45,6 @@
 
   
         <a th:href="@{/login}" sec:authorize="isAnonymous()">Kirjaudu sisään</a>
-
-
     </body>
 
 </html>

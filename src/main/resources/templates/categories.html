@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Kategoriat</title>
+    </head>
+    <body>
+        <h1>Nykyiset kategoriat</h1>
+        <ul>
+            <li th:each="category : ${categories}" th:text="${category.name}">
+                Kategoria
+            </li>
+        </ul>
+        
+        <form th:action="@{/kategoriat}" method="POST">
+            <input type="text" name="categoryName" />
+            <input type="submit" value="Lisää uusi kategoria!" />            
+        </form>
+    </body>
+
+</html>

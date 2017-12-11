@@ -30,6 +30,8 @@
   
         <a th:href="@{/login}" sec:authorize="isAnonymous()">Kirjaudu sisään</a>
         
+        <a th:href="@{/kategoriat}" sec:authorize="hasAuthority('POSTER')">Selaa ja lisää kategorioita</a>
+        
     </body>
 
 </html>

@@ -30,6 +30,7 @@ public class ProductionSecurityConfiguration extends WebSecurityConfigurerAdapte
                 .antMatchers("/lisaa").authenticated()
                 .antMatchers(HttpMethod.GET, "uutiset/*/muokkaa").authenticated()
                 .antMatchers(HttpMethod.POST, "uutiset/*/muokkaa").authenticated()
+                .antMatchers("/kategoriat/*").authenticated()
                 .antMatchers("/images/*").permitAll()
                 .anyRequest().permitAll();
         

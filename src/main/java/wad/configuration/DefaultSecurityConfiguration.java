@@ -32,6 +32,7 @@ public class DefaultSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/uutiset").authenticated()
                 .antMatchers(HttpMethod.GET, "uutiset/*/muokkaa").authenticated()
                 .antMatchers(HttpMethod.POST, "/muokkaa/*/muokkaa").authenticated()
+                .antMatchers("/kategoriat/*").authenticated()
                 .antMatchers("/lisaa").authenticated()
                 .antMatchers("/images/*").permitAll()
                 .anyRequest().permitAll();
